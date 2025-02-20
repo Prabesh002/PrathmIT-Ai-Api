@@ -1,0 +1,4 @@
+vector_store:
+  dimension: 1536
+  index_path: "faiss_index.index"
+  file_hash_path: "file_hash.txt"

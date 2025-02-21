@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.utils import vector_db, openai_client
+from app.utils.config import CONFIG
 
 bp = Blueprint('query', __name__, url_prefix='/query')
 
@@ -9,7 +10,7 @@ def query_ai():
     if not data or 'prompt' not in data:
         return jsonify({'error': 'Prompt required'}), 400
     prompt = data['prompt']
-    system_prompt = data.get('system_prompt', '')
+    system_prompt = data.get('system_prompt', CONFIG.get('system_prompt', ''))
     results = vector_db.search(prompt)
     context = "\n".join(results)
     ai_response = openai_client.get_ai_response(prompt, system_prompt, context)

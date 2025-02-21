@@ -14,7 +14,8 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
-    from app.routes import upload, query
+    from app.routes import home, upload, query
+    app.register_blueprint(home.bp)
     app.register_blueprint(upload.bp)
     app.register_blueprint(query.bp)
     return app

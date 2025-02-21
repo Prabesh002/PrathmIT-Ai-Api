@@ -13,6 +13,11 @@ DIM = config['vector_store']['dimension']
 INDEX_PATH = config['vector_store']['index_path']
 HASH_PATH = config['vector_store']['file_hash_path']
 
+index_dir = os.path.dirname(INDEX_PATH)
+if not os.path.exists(index_dir):
+    os.makedirs(index_dir)
+
+
 index = None
 _segments_global = []
 
@@ -25,7 +30,7 @@ def update_index(file_path):
         if saved_hash == file_hash:
             if os.path.exists(INDEX_PATH):
                 index = faiss.read_index(INDEX_PATH)
-            return False
+            return False  
     segments = extract_text_segments(file_path)
     embeddings = []
     for segment in segments:
@@ -38,7 +43,7 @@ def update_index(file_path):
     with open(HASH_PATH, "w") as f:
         f.write(file_hash)
     _segments_global = segments
-    return True
+    return True  
 
 def search(query, k=3):
     global index, _segments_global
